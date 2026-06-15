@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>白鷺鷥埤塘地景與生態調查</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9f6;
+            color: #333;
+        }
+
+        /* 啟用平滑捲動效果 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 頁首網頁標題區 */
+        header {
+            background: linear-gradient(135deg, #1e4d2b, #4a854e);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.4rem;
+            letter-spacing: 1px;
+        }
+        header p {
+            margin: 0.6rem 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* 導覽列與下拉選單 */
+        nav {
+            background-color: #14341c;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            position: relative;
+        }
+        nav ul li a {
+            display: block;
+            color: #e2efe0;
+            padding: 1.1rem 1.6rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        nav ul li a:hover {
+            color: #ffffff;
+            background-color: #235931;
+        }
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #14341c;
+            flex-direction: column;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        nav ul li:hover ul {
+            display: flex;
+        }
+        nav ul li ul li a {
+            padding: 0.9rem 1.2rem;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* 主要內容區 */
+        main {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+        main h2 {
+            color: #14341c;
+            font-size: 1.9rem;
+            border-bottom: 3px solid #4a854e;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1rem;
+        }
+        .main-intro {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2.5rem;
+            max-width: 950px;
+        }
+
+        /* 三大特色區塊的外層 Grid 容器 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
+        }
+
+        /* 調查紀錄卡片結構樣式 */
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 圖片區與左上角 Badge 標籤 */
+        .card-image-box {
+            position: relative;
+            height: 220px;
+            background-color: #e5ebe6;
+        }
+        .card-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: #4a854e;
+            color: white;
+            padding: 0.4rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        /* 卡片文字與內文排版 */
+        .card-body {
+            padding: 1.6rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-body h3 {
+            margin: 0 0 0.8rem 0;
+            color: #14341c;
+            font-size: 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-body h3 span {
+            font-size: 0.8rem;
+            color: #666;
+            background-color: #f0f4f1;
+            border: 1px solid #dcdfdc;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-weight: normal;
+        }
+        .card-body p {
+            color: #555;
+            font-size: 0.98rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            text-align: justify;
+        }
+        .card-body p b {
+            color: #276230;
+        }
+
+        /* 外部延伸連結按鈕 */
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            align-self: flex-start;
+            color: #1e4d2b;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 2px;
+            transition: all 0.3s ease;
+        }
+        .card-btn:hover {
+            color: #4a854e;
+            border-bottom-color: #4a854e;
+        }
+
+        /* 深層資料文本區塊的專屬樣式 */
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+            margin-bottom: 3.5rem;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+            scroll-margin-top: 80px; /* 防止置頂導覽列遮擋跳轉後的標題 */
+        }
+        .content-section h2 {
+            font-size: 1.7rem;
+            border-bottom: 3px solid #14341c;
+            color: #14341c;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+        .content-grid {
+            display: flex;
+            gap: 2.5rem;
+            align-items: flex-start;
+        }
+        .content-text {
+            flex: 2;
+            min-width: 300px;
+        }
+        .content-text h3 {
+            color: #276230;
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.6rem;
+        }
+        .content-text p {
+            color: #444;
+            font-size: 1rem;
+            margin: 0 0 1.2rem 0;
+            text-align: justify;
+        }
+        .content-text ul {
+            padding-left: 1.5rem;
+            margin: 0 0 1.2rem 0;
+        }
+        .content-text ul li {
+            margin-bottom: 0.6rem;
+            color: #444;
+        }
+        .content-text ul li b {
+            color: #14341c;
+        }
+        .content-img-box {
+            flex: 1;
+            min-width: 280px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .content-img-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* 隨堂測驗互動樣式 */
+        .quiz-container {
+            margin-top: 3rem;
+            border-top: 2px dashed #4a854e;
+            padding-top: 2.5rem;
+            scroll-margin-top: 90px;
+        }
+        .quiz-item {
+            background-color: #f3f6f3;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid #276230;
+        }
+        .quiz-item p {
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: #14341c;
+        }
+        .quiz-item label {
+            margin-right: 2rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .quiz-item input[type="radio"] {
+            margin-right: 0.4rem;
+            transform: scale(1.1);
+        }
+        .feedback-box {
+            margin-top: 1rem;
+            display: none;
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .quiz-btn {
+            background-color: #276230;
+            color: white;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        .quiz-btn:hover {
+            background-color: #1e4d2b;
+        }
+        .quiz-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 頁尾 */
+        footer {
+            background-color: #14341c;
+            color: rgba(255, 255, 255, 0.75);
+            text-align: center;
+            padding: 1.8rem 1rem;
+            margin-top: 5rem;
+            font-size: 0.9rem;
+            border-top: 3px solid #4a854e;
+        }
+        
+        /* 手機板 RWD 自動調整 */
+        @media (max-width: 768px) {
+            .content-grid {
+                flex-direction: column;
+            }
+            .content-img-box {
+                width: 100%;
+            }
+        }
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            nav ul { flex-direction: column; align-items: center; }
+            nav ul li { width: 100%; text-align: center; }
+            nav ul li ul { position: relative; width: 100%; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>白鷺鷥埤塘地景與生態調查</h1>
+        <p>環境教育研究：埤塘空間地景、鳥類自然資源與歷史文化意象</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#water-history">首頁（水利歷史）</a></li>
+            <li><a href="#">生態與現狀 ▼</a>
+                <ul>
+                    <li><a href="#ecology-survey">生態調查（地景生態）</a></li>
+                    <li><a href="#changes-challenges">變遷與現狀（挑戰研究）</a></li>
+                </ul>
+            </li>
+            <li><a href="#quiz-section">互動任務（導覽測驗）</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <section id="water-history" class="content-section">
+            <h2>🌊 水利歷史（千塘源流）</h2>
+            <div class="content-grid">
+                <div class="content-text">
+                    <h3>1. 清代先民墾拓與「芎仔陂」舊稱</h3>
+                    <p>桃園台地因缺乏大型恆流河川，先民自清治乾隆年間開墾此地時，便採取「鑿池蓄水」的智慧，利用台地微幅傾斜的地形，一鍬一石築堤成埤。<b>白鷺鷥生態埤塘（桃園大圳 2-14 號池）</b>在早期的文獻與舊地圖中被稱為<b>「芎仔陂」</b>。當時主要依靠貯存雨水與季節性小溪流，為周邊大片旱田提供珍貴的插秧與灌溉水源，是地方宗族與農業聚落賴以生存的命脈。</p>
+                    
+                    <h3>2. 日治時期納入「桃園大圳」現代水利體系</h3>
+                    <p>早期的自然埤塘常面臨「大雨易溢、久旱即乾」的困境。西元 1916 年（日治大正五年），台灣總督府展開規模龐大的「桃園大圳」興建工程。在技師八田與一等人參與規劃下，築堰引導大漢溪水源。芎仔陂於此時期被正式編入<b>桃園大圳體系，命名為「二號分線 14 號池」</b>（簡稱 2-14 號池）。透過綿密的人工導水路網絡，池水獲得常年穩定的補給，徹底改寫了桃園台地看天田的宿命，締造了「千塘之鄉」的水稻黃金時代。</p>
+                    
+                    <h3>3. 戰後石門水庫興建與現代功能轉型</h3>
+                    <p>1960 年代石門水庫與石門大圳完工後，桃園整體的灌溉水利系統更加完備。然而，隨著都市擴張與永安路周邊農田逐步轉化為住宅、工業用地，2-14 號池的傳統農業灌溉需求大幅下降。近年來，這口百年老埤塘成功轉型，由傳統的水利生產設施躍升為兼具<b>「都市防洪滯洪、微氣候調節與在地環境教育」</b>的多功能生態公園，其百年的水利血脈以綠色生態的形式在現代都市中延續。</p>
+                </div>
+                <div class="content-img-box">
+                    <img src="images/history_pond_old.jpg" alt="桃園大圳百年水利歷史意象" onerror="this.src='https://images.unsplash.com/photo-1508873535684-277a3cbcc4e8?auto=format&fit=crop&w=600&q=80'">
+                </div>
+            </div>
+        </section>
+
+        <h2>🌾 白鷺鷥埤塘地景、生態與文化紀錄</h2>
+        <p class="main-intro">本小組針對桃園區<b>白鷺鷥生態埤塘（桃園大圳 2-14 號池）</b>進行實地與文獻調查。本篇報告全面梳理其空間地理地景、豐富的野生鳥類自然資源，以及百年的千塘墾拓歷史與現代社區藝術文化，共整理出以下三大核心面向：</p>
+        
+        <div class="grid-container">
+            <div class="card">
+                <div class="card-image-box">
+                    <span class="card-badge">地景與地理地圖</span>
+                    <img src="images/landscape_map.jpg" alt="白鷺鷥埤塘環湖步道與地圖" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'">
+                </div>
+                <div class="card-body">
+                    <h3>水岸步道與定位 <span>空間地景</span></h3>
+                    <p><b>白鷺鷥生態埤塘（2-14號埤塘）</b>位於桃園市桃園區永安路 1480 巷旁。此處規劃有約 700 公尺長的環湖生態步道，兩側綠樹成蔭、設有親水涼亭與土地公廟，是城市中鬧中取靜的綠色秘境。由於該池緊鄰國道 1 號與國道 2 號系統交流道旁，開車行經國道時常能遠眺其波光粼粼的秀麗湖面。下方連結已配置精確地理定位。</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=桃園白鷺鷥生態埤塘" class="card-btn" target="_blank">🌐 跳轉：白鷺鷥埤塘google地圖 ➔</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image-box">
+                    <span class="card-badge">生態與自然資源</span>
+                    <img src="images/egret_ecology.jpg" alt="白鷺鷥與濕地生態" onerror="this.src='https://images.unsplash.com/photo-1551085254-e96b210db58a?auto=format&fit=crop&w=600&q=80'">
+                </div>
+                <div class="card-body">
+                    <h3>鷺科鳥類與留鳥 <span>鳥類觀察</span></h3>
+                    <p>因水域內擁有豐富 of 魚蝦自然資源與茂密的挺水植物，這裡成了不折不扣的鳥類天堂。其中以<b>大白鷺、小白鷺與黃頭鷺</b>的數量最為龐大，牠們常在水岸邊低頭覓食、盤旋飛翔。此外，這裡也是夜鷺、紅冠水雞、小鸊鷉的繁衍家園，冬春兩季更會吸引大批過境候鳥在此停棲，反映出該埤塘具備極佳的生態自淨能力與底棲價值。</p>
+                    <a href="#ecology-survey" class="card-btn">🦅 錨點跳轉：查看鳥類調查 ➔</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-image-box">
+                    <span class="card-badge">歷史與文化意象</span>
+                    <img src="images/culture_art.jpg" alt="千塘之鄉與白鷺鷥地景藝術" onerror="this.src='https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80'">
+                </div>
+                <div class="card-body">
+                    <h3>千塘水利與社區共創 <span>在地文化</span></h3>
+                    <p>桃園素有「千塘之鄉」美譽，2-14號池在歷史上扮演著農田灌溉蓄水的重要角色。近年結合永續發展指標（SDGs），桃園推動了<b>白鷺鷥埤塘特色意象營造與社區共創藝術</b>，擾動西埔里在地居民與學校共同參與，深化地方認同。這項文化精神也呼應了楊梅富岡著名的巨大不鏽鋼白鷺鷥地景藝術《粼粼波光、翩翩白影》，成功將百年水利歷史轉化為現代人文美學。</p>
+                    <a href="#changes-challenges" class="card-btn">🎨 錨點跳轉：查看變遷研究 ➔</a>
+                </div>
+            </div>
+        </div>
+
+        <section id="ecology-survey" class="content-section">
+            <h2>🌾 生態調查（地景生態）</h2>
+            <div class="content-grid">
+                <div class="content-text">
+                    <h3>1. 埤塘空間地理與水文特徵</h3>
+                    <p><b>白鷺鷥生態埤塘（桃園大圳 2-14 號池）</b>坐落於桃園市桃園區西埔里，水域蓄水面積約達 6.22 公頃，總蓄水量約為 137,825 立方公尺。其原本具有顯著的清代台地農田灌溉功能。園區現今建置有 700 公尺長的環湖生態步道，護岸採取生態工法多孔性鋪面，能有效儲留雨水、調節當地微氣候，提供水陸交界生物極佳的棲息與繁殖基底。</p>
+                    
+                    <h3>2. 茂密的挺水植物群落</h3>
+                    <p>在長期的實地調查中，埤塘水岸線與淺水區廣泛分布著大量的挺水植物與濕地植群，包括<b>香蒲、蘆葦、大安水蓑衣、野薑花與大黃萍</b>等。這些植物發達的根系不僅扮演著「自然過濾器」的角色，能吸收池水中的氮、磷物質進行水質自淨，同時也為水鳥、蜻蜓、豆娘等底棲昆蟲群落提供了完美的隱蔽與築巢空間。</p>
+                    
+                    <h3>3. 鷺科與野生留鳥的天堂</h3>
+                    <p>由於埤塘生態鏈基底穩定，水體內擁有豐富的底棲魚蝦與浮游生物資源。本區以鷺科鳥類最為知名，<b>小白鷺、大白鷺、黃頭鷺</b>長年常駐於此，並在草叢、樹梢歇息，覓食畫面充滿自然野趣。此外，這裡亦是<b>夜鷺（俗稱暗公鳥）、紅冠水雞、小鸊鷉</b>的重要繁衍棲地。冬春之交，更會迎來大批北方雁鴨科（如鳳頭潛鴨）在此度冬中繼，具備極高的生態保育價值。</p>
+                </div>
+                <div class="content-img-box">
+                    <img src="images/ecology_detail_egret.jpg" alt="白鷺鷥生態埤塘鳥類觀測點" onerror="this.src='https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80'">
+                </div>
+            </div>
+        </section>
+
+        <section id="changes-challenges" class="content-section">
+            <h2>⚠️ 變遷與現狀（挑戰研究）</h2>
+            <div class="content-grid">
+                <div class="content-text">
+                    <h3>1. 歷史水利功能的轉化與地景割裂</h3>
+                    <p>2-14 號池舊稱「芎仔陂」，在清代與日治時期是地方重要的農業命脈。然而隨著石門大圳水利管網現代化、以及周邊大面積水田轉化為都市住宅區，其灌溉功能逐漸式微。最劇烈的環境變遷在於現代交通建設，該埤塘緊鄰國道 1 號與國道 2 號系統交流道，部分池面因道路拓寬而遭到填平，地景上被高架橋重重包圍，逐漸演變成典型的<b>「都市生態孤島」</b>。</p>
+                    
+                    <h3>2. 當前生態環境面臨的三大挑戰</h3>
+                    <ul>
+                        <li><b>棲地零碎化與噪音光害：</b>緊鄰國道交通大動脈，日夜不間斷的車流噪音、高架橋廢氣與夜間強烈車燈，對高度敏感的鷺科鳥類築巢與繁殖行為產生隱形壓力。</li>
+                        <li><b>外來入侵種的生態擠壓：</b>埤塘水體中遭遇民眾放生野化的<b>吳郭魚、琵琶鼠魚（垃圾魚）</b>過度繁殖，嚴重威脅本土底棲魚類生存；岸邊亦有強勢外來種<b>白尾八哥</b>，與本土留鳥爭奪樹洞與生存空間。</li>
+                        <li><b>生活污水與富營養化：</b>周邊密集住宅社區的面源污染及廢水排入，在降雨稀少的季節極易導致池水富營養化，使藻類過度增生，考驗埤塘自身的淨水機能。</li>
+                    </ul>
+                    
+                    <h3>3. 永續發展與公民監測新路徑</h3>
+                    <p>因應上述挑戰，桃園市政府與地方組織近年積極依據聯合國永續發展指標（SDGs），將其轉型升級為「生態埤塘公園」。除了在西埔里推動社區共創藝術外，桃園市野鳥學會等組織也定期導入<b>公民科學家</b>進行冬季水鳥普查，並將真實的生態數據上傳至康乃爾大學全球 eBird 鳥類資料庫。未來期望透過綠帶復育與更嚴格的水質監測，讓這口百年老池能永續平衡「人、城市與自然」的共生關係。</p>
+                </div>
+                <div class="content-img-box">
+                    <img src="images/challenges_detail_pond.jpg" alt="都市與埤塘生態環境共生挑戰" onerror="this.src='https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=600&q=80'">
+                </div>
+            </div>
+
+            <div id="quiz-section" class="quiz-container">
+                <h2>🎯 互動任務：導覽隨堂測驗（是非題）</h2>
+                <p style="color: #666; margin-bottom: 1.5rem;">請依據上方文獻與調查報告內容，回答以下題目：</p>
+                
+                <div class="quiz-item">
+                    <p>Q1. 白鷺鷥生態埤塘（2-14 號池）在清代先民墾拓時期被稱為「芎仔陂」，日治時期更在八田與一等技師的規劃下，被正式納入桃園大圳現代水利體系中。</p>
+                    <label><input type="radio" name="q1" value="O"> ⭕ 正確 (True)</label>
+                    <label><input type="radio" name="q1" value="X"> ❌ 錯誤 (False)</label>
+                    <div id="feedback-1" class="feedback-box"></div>
+                </div>
+
+                <div class="quiz-item">
+                    <p>Q2. 根據變遷與現狀研究，目前白鷺鷥埤塘面臨強勢外來入侵鳥類的嚴重威脅，主要是大量繁衍並搶奪本土留鳥樹洞的「黑面琵鷺」。</p>
+                    <label><input type="radio" name="q2" value="O"> ⭕ 正確 (True)</label>
+                    <label><input type="radio" name="q2" value="X"> ❌ 錯誤 (False)</label>
+                    <div id="feedback-2" class="feedback-box"></div>
+                </div>
+
+                <button type="button" class="quiz-btn" onclick="checkAnswers()">對答案</button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 網頁設計期末報告 - 白鷺鷥埤塘生態與文化研究小組</p>
+    </footer>
+
+    <script>
+        function checkAnswers() {
+            // ----- 題目一驗證 (正確答案: O) -----
+            const q1Options = document.getElementsByName('q1');
+            let q1Value = '';
+            for (let opt of q1Options) {
+                if (opt.checked) q1Value = opt.value;
+            }
+            const fb1 = document.getElementById('feedback-1');
+            
+            if (q1Value === '') {
+                fb1.style.display = 'block';
+                fb1.style.backgroundColor = '#ffebe6';
+                fb1.style.color = '#cc3300';
+                fb1.innerHTML = '<b>⚠️ 提示：</b>請先選擇第一題的答案！';
+            } else if (q1Value === 'O') {
+                fb1.style.display = 'block';
+                fb1.style.backgroundColor = '#e6f4ea';
+                fb1.style.color = '#137333';
+                fb1.innerHTML = '<b>⭕ 回答正確！</b><br><b>詳細解答：</b>完全正確！白鷺鷥生態埤塘舊時稱為「芎仔陂」，西元 1916 年（日治大正五年）納入大圳體系後編為「二號分線 14 號池」，確實是由八田與一等重要水利技師參與系統規劃，改寫了看天田的宿命。';
+            } else {
+                fb1.style.display = 'block';
+                fb1.style.backgroundColor = '#fce8e6';
+                fb1.style.color = '#c5221f';
+                fb1.innerHTML = '<b>❌ 回答錯誤！</b><br><b>詳細解答：</b>此題敘述應為「正確」。該埤塘舊稱的確為「芎仔陂」，且在日治大正年間正式被編入由八田與一等人規劃的桃園大圳現代水利體系中。';
+            }
+
+            // ----- 題目二驗證 (正確答案: X) -----
+            const q2Options = document.getElementsByName('q2');
+            let q2Value = '';
+            for (let opt of q2Options) {
+                if (opt.checked) q2Value = opt.value;
+            }
+            const fb2 = document.getElementById('feedback-2');
+            
+            if (q2Value === '') {
+                fb2.style.display = 'block';
+                fb2.style.backgroundColor = '#ffebe6';
+                fb2.style.color = '#cc3300';
+                fb2.innerHTML = '<b>⚠️ 提示：</b>請先選擇第二題的答案！';
+            } else if (q2Value === 'X') {
+                fb2.style.display = 'block';
+                fb2.style.backgroundColor = '#e6f4ea';
+                fb2.style.color = '#137333';
+                fb2.innerHTML = '<b>⭕ 回答正確！</b><br><b>詳細解答：</b>答對了！報告中指出，搶奪本土留鳥樹洞生存空間的強勢外來入侵種鳥類是<b>「白尾八哥」</b>。黑面琵鷺是極為稀有且受嚴格保護的國際保育類冬候鳥，並非強勢外來入侵種。';
+            } else {
+                fb2.style.display = 'block';
+                fb2.style.backgroundColor = '#fce8e6';
+                fb2.style.color = '#c5221f';
+                fb2.innerHTML = '<b>❌ 回答錯誤！</b><br><b>詳細解答：</b>此題敘述應為「錯誤」。嚴重威脅在地原生留鳥生存空間的有害外來鳥類是<b>「白尾八哥」</b>；黑面琵鷺則是過境度冬的珍貴保育類動物，並非入侵種。';
+            }
+        }
+    </script>
+
+</body>
+</html>
